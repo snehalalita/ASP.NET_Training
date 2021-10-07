@@ -40,13 +40,15 @@
                         Salesman ID
                     </td>
                     <td>
-                        <asp:TextBox ID="txtSalesmanID" runat="server"></asp:TextBox>
+                        
+                        <asp:DropDownList ID="ddlSalesmanID" runat="server">
+                        </asp:DropDownList>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click"/>
-                        <asp:Button ID="btnReset" runat="server" Text="Reset"/>
+                        <asp:Button ID="btnReset" runat="server" Text="Reset" OnClick="btnReset_Click"/>
                         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Update" />
                     </td>
                 </tr>

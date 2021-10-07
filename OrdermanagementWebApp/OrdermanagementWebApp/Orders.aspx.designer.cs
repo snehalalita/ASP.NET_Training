@@ -51,22 +51,22 @@ namespace OrdermanagementWebApp
         protected global::System.Web.UI.WebControls.TextBox txtOrderDate;
 
         /// <summary>
-        /// txtCustomerID control.
+        /// ddlCustomerID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCustomerID;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCustomerID;
 
         /// <summary>
-        /// txtSalesmanID control.
+        /// ddlSalesmanID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSalesmanID;
+        protected global::System.Web.UI.WebControls.DropDownList ddlSalesmanID;
 
         /// <summary>
         /// btnSave control.

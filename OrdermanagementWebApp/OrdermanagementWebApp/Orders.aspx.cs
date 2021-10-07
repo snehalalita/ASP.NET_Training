@@ -12,10 +12,26 @@ namespace OrdermanagementWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            DbConnection dbObj = new DbConnection();
-            DataTable dtOrderResult = dbObj.getOrders();
-            gvOrderDetails.DataSource = dtOrderResult;
-            gvOrderDetails.DataBind();
+            if (!IsPostBack)
+            {
+                DbConnection dbObj = new DbConnection();
+                DataTable dtOrderResult = dbObj.getOrders();
+                gvOrderDetails.DataSource = dtOrderResult;
+                gvOrderDetails.DataBind();
+                DataTable dtCustomerResult = dbObj.getCustomers();
+                ddlCustomerID.Items.Add("Select");
+                for (int i = 0; i < dtCustomerResult.Rows.Count; i++)
+                {
+                    ddlCustomerID.Items.Add(new ListItem(dtCustomerResult.Rows[i][0].ToString() + "-" + dtCustomerResult.Rows[i][1].ToString(), dtCustomerResult.Rows[i][0].ToString()));
+                }
+
+                DataTable dtSalesmanResult = dbObj.getSalesmans();
+                ddlSalesmanID.Items.Add("Select");
+                for (int i = 0; i < dtSalesmanResult.Rows.Count; i++)
+                {
+                    ddlSalesmanID.Items.Add(new ListItem(dtSalesmanResult.Rows[i][0].ToString() + "-" + dtSalesmanResult.Rows[i][1].ToString(), dtSalesmanResult.Rows[i][0].ToString()));
+                }
+            }
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
@@ -27,11 +43,12 @@ namespace OrdermanagementWebApp
             int customerID,salesmanID;
             purchase_amount = Convert.ToInt32(txtPurchaseAmount.Text);
             date = txtOrderDate.Text;
-            customerID = Convert.ToInt32(txtCustomerID.Text);
-            salesmanID = Convert.ToInt32(txtSalesmanID.Text);
+            customerID = Convert.ToInt32(ddlCustomerID.SelectedValue.ToString()) ;
+            salesmanID = Convert.ToInt32(ddlSalesmanID.SelectedValue.ToString());
 
             DbConnection dbObj = new DbConnection();
             dbObj.insertOrder(purchase_amount,date,customerID,salesmanID);
+            btnReset_Click(sender, e);
             lbl1.Text = "Record added successfully";
             DataTable dtOrderResult = dbObj.getOrders();
             gvOrderDetails.DataSource = dtOrderResult;
@@ -41,7 +58,14 @@ namespace OrdermanagementWebApp
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
             DbConnection dbConnection = new DbConnection();
-            dbConnection.updateOrder(Convert.ToInt32(lblOrderid.Text),Convert.ToInt32( txtPurchaseAmount.Text), txtOrderDate.Text, Convert.ToInt32(txtCustomerID.Text), Convert.ToInt32(txtSalesmanID.Text));
+            int customerID = Convert.ToInt32(ddlCustomerID.SelectedValue.ToString());
+            int salesmanID = Convert.ToInt32(ddlSalesmanID.SelectedValue.ToString());
+            int orderNo = Convert.ToInt32(lblOrderid.Text);
+            double purchAmount = Convert.ToDouble(txtPurchaseAmount.Text);
+            string ord_date = txtOrderDate.Text;
+            dbConnection.updateOrder(orderNo, purchAmount,ord_date ,customerID,salesmanID);
+            btnUpdate_Click(sender, e);
+            lbl1.Text = "Order updated successfully";
             DataTable dtOrderResult = dbConnection.getOrders();
             gvOrderDetails.DataSource = dtOrderResult;
             gvOrderDetails.DataBind();
@@ -56,8 +80,8 @@ namespace OrdermanagementWebApp
                 DataTable dt = dbConnection.getOrderByID(orderid);
                txtPurchaseAmount.Text = dt.Rows[0][1].ToString();
                 txtOrderDate.Text = dt.Rows[0][2].ToString();
-                txtCustomerID.Text = dt.Rows[0][3].ToString();
-                txtSalesmanID.Text = dt.Rows[0][4].ToString();
+                ddlCustomerID.SelectedValue= dt.Rows[0][3].ToString();
+                ddlSalesmanID.SelectedValue = dt.Rows[0][4].ToString();
                 lblOrderid.Text = dt.Rows[0][0].ToString();
             }
             else
@@ -68,7 +92,7 @@ namespace OrdermanagementWebApp
                 gvOrderDetails.DataSource = dtOrderResult;
                 gvOrderDetails.DataBind();
             
-        }
+            }
         }
 
         protected void gvOrderDetails_RowEditing(object sender, GridViewEditEventArgs e)
@@ -79,6 +103,15 @@ namespace OrdermanagementWebApp
         protected void gvOrderDetails_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
 
+        }
+
+        protected void btnReset_Click(object sender, EventArgs e)
+        {
+            txtPurchaseAmount.Text = string.Empty;
+            txtOrderDate.Text = string.Empty;
+            ddlCustomerID.SelectedIndex = 0;
+            ddlSalesmanID.SelectedIndex = 0;
+            lblOrderid.Text = string.Empty;
         }
     }
 }

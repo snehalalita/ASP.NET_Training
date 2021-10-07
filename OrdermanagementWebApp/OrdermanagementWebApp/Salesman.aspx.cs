@@ -20,7 +20,10 @@ namespace OrdermanagementWebApp
 
         protected void btnReset_Click(object sender, EventArgs e)
         {
-           
+            txtSalesmanName.Text = string.Empty;
+            txtSalesmanCity.Text = string.Empty;
+            txtSalesmanCommission.Text = string.Empty;
+
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
@@ -34,6 +37,7 @@ namespace OrdermanagementWebApp
             DbConnection dbObj = new DbConnection();
             dbObj.insertSalesman(salesmanname, salesmancity, commission);
             Label1.Text = "Record added successfully";
+            btnReset_Click(sender, e);
             DataTable dtSalesmanResult = dbObj.getSalesmans();
             gvSalesmanDetails.DataSource = dtSalesmanResult;
             gvSalesmanDetails.DataBind();
@@ -44,6 +48,8 @@ namespace OrdermanagementWebApp
         {
             DbConnection dbConnection = new DbConnection();
             dbConnection.updateSalesman(Convert.ToInt32(lblSalesmanid.Text), txtSalesmanName.Text, txtSalesmanCity.Text, txtSalesmanCommission.Text);
+            Label1.Text = "Updated successfully";
+            btnReset_Click(sender, e);
             DataTable dtSalesmanResult = dbConnection.getSalesmans();
             gvSalesmanDetails.DataSource = dtSalesmanResult;
             gvSalesmanDetails.DataBind();
