@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MovieDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="movie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
+          <Property Name="MovieType" Type="varchar" MaxLength="100" />
+          <Property Name="MovieDesc" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="MovieShowTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MovieId" Type="int" />
+          <Property Name="StartTime" Type="varchar" MaxLength="20" />
+          <Property Name="ShowDate" Type="date" />
+        </EntityType>
+        <Association Name="FK__MovieShow__Movie__1273C1CD">
+          <End Role="movie" Type="Self.movie" Multiplicity="0..1" />
+          <End Role="MovieShowTime" Type="Self.MovieShowTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MovieShowTime">
+              <PropertyRef Name="MovieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MovieDbModelStoreContainer">
+          <EntitySet Name="movie" EntityType="Self.movie" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MovieShowTime" EntityType="Self.MovieShowTime" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__MovieShow__Movie__1273C1CD" Association="Self.FK__MovieShow__Movie__1273C1CD">
+            <End Role="movie" EntitySet="movie" />
+            <End Role="MovieShowTime" EntitySet="MovieShowTime" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MovieDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="movie">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MovieType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MovieDesc" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MovieShowTimes" Relationship="Self.FK__MovieShow__Movie__1273C1CD" FromRole="movie" ToRole="MovieShowTime" />
+        </EntityType>
+        <EntityType Name="MovieShowTime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MovieId" Type="Int32" />
+          <Property Name="StartTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ShowDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="movie" Relationship="Self.FK__MovieShow__Movie__1273C1CD" FromRole="MovieShowTime" ToRole="movie" />
+        </EntityType>
+        <Association Name="FK__MovieShow__Movie__1273C1CD">
+          <End Role="movie" Type="Self.movie" Multiplicity="0..1" />
+          <End Role="MovieShowTime" Type="Self.MovieShowTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="movie">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MovieShowTime">
+              <PropertyRef Name="MovieId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MovieDbEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="movies" EntityType="Self.movie" />
+          <EntitySet Name="MovieShowTimes" EntityType="Self.MovieShowTime" />
+          <AssociationSet Name="FK__MovieShow__Movie__1273C1CD" Association="Self.FK__MovieShow__Movie__1273C1CD">
+            <End Role="movie" EntitySet="movies" />
+            <End Role="MovieShowTime" EntitySet="MovieShowTimes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MovieDbModelStoreContainer" CdmEntityContainer="MovieDbEntities">
+          <EntitySetMapping Name="movies">
+            <EntityTypeMapping TypeName="MovieDbModel.movie">
+              <MappingFragment StoreEntitySet="movie">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MovieType" ColumnName="MovieType" />
+                <ScalarProperty Name="MovieDesc" ColumnName="MovieDesc" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MovieShowTimes">
+            <EntityTypeMapping TypeName="MovieDbModel.MovieShowTime">
+              <MappingFragment StoreEntitySet="MovieShowTime">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="MovieId" ColumnName="MovieId" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="ShowDate" ColumnName="ShowDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
