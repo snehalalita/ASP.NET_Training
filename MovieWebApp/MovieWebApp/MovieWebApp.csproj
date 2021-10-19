@@ -239,6 +239,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MovieBusiness\MovieBusiness.csproj">
+      <Project>{eb79ae4d-0472-4c5f-97a5-eda5033be110}</Project>
+      <Name>MovieBusiness</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MovieData\MovieData.csproj">
       <Project>{f0f0432c-b21d-4df2-8393-659729613f1e}</Project>
       <Name>MovieData</Name>
